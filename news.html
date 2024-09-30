@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .card {
+            margin-bottom: 91px; 
+            height: 91%; 
+            display: flex;
+            flex-direction: column; 
+        }
+        .card img {
+            max-height: 200px;
+            object-fit: cover;
+        }
+        .card-body {
+            flex-grow: 1;
+            margin-bottom: 2px;
+        }
+        .card-text {
+            overflow: hidden;
+            text-overflow: ellipsis; 
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical; 
+        }
+        .head
+        {
+            margin-top: 8rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
+        <div class="container">
+            <a class="navbar-brand" href="#">Robotics Hub</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto ">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="projects.html">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="news.html">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="bot.html">Bot</a>
+                    </li>
+                   
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div class="container head">
+    <h1 class="text-center mb-4">Latest AI News</h1>
+    <div class="row" id="newsContainer">
+    </div>
+</div>
+
+<script>
+    const apiUrl = 'https://www.artificialintelligence-news.com/wp-json/wp/v2/posts?per_page=5';
+
+    const pixabayImages = [
+        'https://media.istockphoto.com/id/1872854179/vector/modern-technology-connection-network-artificial-intelligence-abstract-background.jpg?s=2048x2048&w=is&k=20&c=EukT-GTVQTa-0Ul9att_iAA4jlNxE5qHwkmsMzUrqDE=',
+        'https://media.istockphoto.com/id/1467878602/photo/humanoid-robots-revolutionizing-mundane-tasks.jpg?s=2048x2048&w=is&k=20&c=yzcxXhqYKO2j-Nvoy44XXK7sXj-cQpKh40xlCqh7mSM=',
+        'https://media.istockphoto.com/id/1634086519/photo/human-and-robot-hands-forming-a-heart-shape-together-ai-and-human-collaboration-concept.jpg?s=2048x2048&w=is&k=20&c=-I0yCzDijvY9TfJQzFeFOlMQHKMn_sR0IqGyOBcZ1SE=',
+        'https://cdn.pixabay.com/photo/2024/06/22/18/16/ai-generated-8846765_960_720.png',
+        'https://media.istockphoto.com/id/1204664993/vector/lunar-rover-solid-icon-moon-exploration-buggie-with-three-wheels-world-space-week-design.jpg?s=2048x2048&w=is&k=20&c=xmJLDOl3RCYbQU0_pIXvaK5-i49CXJKkRGf9_2or6jw='
+    ];
+
+    async function fetchNews() {
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            displayNews(data);
+        } catch (error) {
+            console.error('Error fetching news:', error);
+        }
+    }
+
+    function displayNews(articles) {
+        const newsContainer = document.getElementById('newsContainer');
+
+        articles.forEach((article, index) => {
+            const randomImage = pixabayImages[index % pixabayImages.length];
+            const articleDiv = document.createElement('div');
+            articleDiv.classList.add('col-md-4');
+
+            articleDiv.innerHTML = `
+                <div class="card">
+                    <img src="${randomImage}" class="card-img-top" alt="${article.title.rendered}">
+                    <div class="card-body">
+                        <h5 class="card-title">${article.title.rendered}</h5>
+                        <p class="card-text">${article.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "")}</p>
+                        <a href="${article.link}" class="btn btn-primary" target="_blank">Read More</a>
+                    </div>
+                </div>
+            `;
+
+            newsContainer.appendChild(articleDiv);
+        });
+    }
+
+    fetchNews();
+</script>
+<footer class="container-fluid text-light py-4">
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <h3>Explore</h3>
+            <ul class="list-unstyled">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#service">Our Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+            <h3>Support</h3>
+            <ul class="list-unstyled">
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#privacy">Privacy Policy</a></li>
+            </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+            <h3>Socials</h3>
+            <ul class="list-unstyled">
+                <li><a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+                <li><a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></li>
+                <li><a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
